@@ -11,10 +11,10 @@ function [F] = fdm2d_neumann(F,xnode,neighb,NEU)
 %   - Columna 1: índice del nodo donde se aplica la condición de borde.
 %   - Columna 2: valor de flujo térmico (q) asociado al lado del elemento.
 %   - Columna 3: dirección y sentido del flujo:
-%     (1) Flujo en dirección eje-y, sentido negativo (S – South - Sur)
-%     (2) Flujo en dirección eje-x, sentido positivo (E – East - Este)
-%     (3) Flujo en dirección eje-y, sentido positivo (N – North - Norte)
-%     (4) Flujo en dirección eje-x, sentido negativo (W – West – Oeste)
+%     (1) Flujo en dirección eje-y, sentido negativo (S  1�7 South - Sur)
+%     (2) Flujo en dirección eje-x, sentido positivo (E  1�7 East - Este)
+%     (3) Flujo en dirección eje-y, sentido positivo (N  1�7 North - Norte)
+%     (4) Flujo en dirección eje-x, sentido negativo (W  1�7 West  1�7 Oeste)
 
 # En sintecis, hay que restar 2q/dX o 2q/dY segun la normal asociado al nodo
 # del borde. Se debe despejar la distancia entre el nodo P y el nodo que esta
@@ -67,6 +67,9 @@ function [F] = fdm2d_neumann(F,xnode,neighb,NEU)
 ##  indice_vecino = neighb(indice_P(i), cambio_indice);
 ##  distXY = norm(xnode(indice_P(i), :) - xnode(indice_vecino, :));
 ##  F(indice_P(i)) -= 2*NEU(i, 2)./distXY;
+
+# Por que aqui no pide agrearle 1 a la matriz K?
+##  K(indice_P(i), indice_vecino) += 1;
 ##endfor
 
 
