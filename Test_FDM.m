@@ -48,7 +48,9 @@ i_v(Px)
 dist = [0 1; 0 0]-[ 1 1; 2 0]
 norm(dist, "rows")
 
-
-
+[1,2,3](3)
+% Esto puede ser la causa en que el metodo reducido no funciona.
+A = [1 0]
+A([1 1]) += 5
 
 

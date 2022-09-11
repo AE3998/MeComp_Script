@@ -50,7 +50,25 @@ function [F] = fdm2d_neumann(F,xnode,neighb,NEU)
 
 # Falta restarle 2q/dX o 2q/dY al vector del flujo F que contiene al nodo del
 # borde. El valor del flujo q se encuentra en la segunda columna de NEU.
-  F(indice_P) -= 2*NEU(:, 2)./distXY;
+
+  for i = i:len_P
+    F(indice_P(i)) -= 2*NEU(i, 2)./distXY(i);
+  endfor
+
+# Modo extendido:
+
+##  indice_P = NEU(:, 1);
+##  len_P = length(indice_P);
+##
+##for i = 1:len_P
+##  i_n = [3 4 1 2];
+##  cambio_indice = i_n(indice_P(i));
+##
+##  indice_vecino = neighb(indice_P(i), cambio_indice);
+##  distXY = norm(xnode(indice_P(i), :) - xnode(indice_vecino, :));
+##  F(indice_P(i)) -= 2*NEU(i, 2)./distXY;
+##endfor
+
 
 % Salida:
 % * F: vector de flujo térmico con modificaciones luego de aplicar la condición de borde.
