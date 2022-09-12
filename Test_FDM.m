@@ -53,4 +53,7 @@ norm(dist, "rows")
 A = [1 0]
 A([1 1]) += 5
 
+-a = b = c = 1
+a = -b
+
 
