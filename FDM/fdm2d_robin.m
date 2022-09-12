@@ -24,29 +24,24 @@ function [K,F] = fdm2d_robin(K,F,xnode,neighb,ROB)
 # al nodo del borde robin, como el miembro derecho F del sistema multiplicado
 # por la phi_inf.
 
-
-# Me surge la duda de que si habra que sumarle 1 tambien a aquel vecino que fue
-# creado por el nodo ficticio, ya que en el sistema original no se tiene en
-# cuenta esto.
-
   indice_P = ROB(:, 1);
   len_P = length(indice_P);
 
   for i = 1:len_P
-# indice del nodo vecino del nodo p en el sentido oinverso de su normal.
+# indice del nodo vecino del nodo p en el sentido inverso de su normal.
 # vecino(P(1), normal_P_modificado)
     indice_vecino = neighb(indice_P(i), [3 4 1 2](ROB(i, 4)));
 
 # Distancia entre el nodo P con su vecino usando xnode
-    distXY = norm(xnode(indice_P(i), :),
-                  xnode(indice_vecino, :));
+    distXY = norm(xnode(indice_P(i), :) -
+                            xnode(indice_vecino, :));
 
 # Sacar el coeficiente 2*h/dXY.
-    coef = 2*ROB(i, 2)./distXY;
+    coef = 2*ROB(i, 2)/distXY;
 
 # Sumarle el coef*phi_inf al F, y el coef al K en sus posiciones correspondientes.
     K(indice_P(i), indice_P(i)) += coef;
-    F(indice_P(i)) += coef*phi_inf;
+    F(indice_P(i)) += coef*ROB(i, 3);
 
 # Puede que sea necesario sumarle 1 al inidce vecino
 #   K(indice_P(i), indice_vecino) += 1;

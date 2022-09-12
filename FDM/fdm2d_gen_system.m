@@ -19,15 +19,15 @@ len_sis = length(G);
 K = sparse(zeros(len_sis)); # No se si es necesario inicializar la matriz.
 
 for i = 1:len_sis
-  # inicializar las distancias con -1
-  #ds = de = dn = dw = -1;
-  dist = -1*ones(1, 4);
+  # inicializar las distancias con 0
+  #ds = de = dn = dw = 0;
+  dist = zeros(1, 4);
 
 # Asignar las distancias cuando esto no es -1 en el vector dist de 4 elementos.
   for j = 1:4
     indice_vecino = neighb(i, j);
     if (indice_vecino != -1)
-      dist(j) = norm( xnode(i, :),
+      dist(j) = norm( xnode(i, :) -
                       xnode(indice_vecino, :));
     endif
   endfor
@@ -40,8 +40,8 @@ for i = 1:len_sis
   ax = bx = cx = 0;
 
 # Recordar que 2 es E y 4 es W, generar los coeficientes correspondientes
-  if (dist(2)*dist(4) < 0)
-    if (dist(2) < 0)
+  if (dist(2)*dist(4) == 0)
+    if (dist(2) == 0)
       cx = 2/(dist(4)*dist(4));
       bx = -cx;
     else
@@ -57,8 +57,8 @@ for i = 1:len_sis
 
   ay = by = cy = 0;
 # Recordar que 1 es S y 3 es N, generar los coeficientes correspondientes
-  if (dist(1)*dist(3) < 0)
-    if (dist(1) < 0)
+  if (dist(1)*dist(3) == 0)
+    if (dist(1) == 0)
       ay = 2/(dist(3)*dist(3));
       by = -ay;
     else
@@ -68,12 +68,12 @@ for i = 1:len_sis
   else
     coef = dist(1) + dist(3);
     ay = 2/(dist(3)*coef);
-    by = 2/(dist(1)*dist(3));
+    by = -2/(dist(1)*dist(3));
     cy = 2/(dist(1)*coef);
   endif
 
 # Sumar los coeficientes a la matriz K
-  K(i,i) += bx+by;
+  K(i,i) += bx + by;
 
 # Siguiendo la nomenclatura, [1 2 3 4] => [S E N W]
   coef = [cy ax ay cx];
@@ -84,6 +84,11 @@ for i = 1:len_sis
     endif
   endfor
 
+# La fila se multiplica por la constante -k y luego
+# se suma la constante c.
+K(i, :) *= -k(i);
+K(i, i) += c(i);
+  
 endfor
 
 F = G;

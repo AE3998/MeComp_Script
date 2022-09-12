@@ -57,3 +57,57 @@ A([1 1]) += 5
 a = -b
 
 
+#Gran problema detectado en Aide3
+A = ones(3);
+A([1 3], :) = 0
+
+z = [1 4 5 6 7];
+
+Dir = [1 4 5 3]
+z(Dir(:)) = Dir(:)
+
+x = ones(6);
+x(Dir(:), :) = 0
+# al ser una asignacion, i = [1435] 
+# y no funciona igual que c++
+for i = Dir(:) # El problema surge de agregar (:) cuando es 1D
+    x(i, i) = 1;
+endfor
+i
+
+# Aqui no hay el problema previo cuando 
+# trato de un vector horizontal
+Dir = [Dir; Dir]
+for i = Dir(1, :)
+  i  
+endfor
+i
+
+# Hay problema cuando 
+# trato de un vector vertical
+Dir = Dir'
+for i = Dir(:, 1) 
+  i  
+endfor
+i
+
+# Ahi soluciona el problema
+z = Dir(:, 1) ;
+for i = z'
+  i  
+endfor
+i
+
+# Documentacion de los errores:
+# Sobre todo los errores surgen ya por el ciclo
+# for con un vector columna, o por el mal uso 
+# de la funcion norm (que en teoria recibe un solo
+# vector, pero le mando como parametro 2 vectores).
+
+# Gen_system me olvide agregar los terminos k y c.
+# El primero como si depende de la posicion, 
+# multiplico directamente por la fila de la matriz.
+# La c creo que no forma parte de la multiplicacion
+# por lo que se lo sumo a lo ultimo. Aunque no 
+# llegue al resultado correcto todavia.
+
