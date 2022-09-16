@@ -20,7 +20,7 @@ K = sparse(zeros(len_sis)); # No se si es necesario inicializar la matriz.
 
 for i = 1:len_sis
   # inicializar las distancias con 0
-  #ds = de = dn = dw = 0;
+  # ds = de = dn = dw = 0;
   dist = zeros(1, 4);
 
 # Asignar las distancias cuando esto no es -1 en el vector dist de 4 elementos.
@@ -32,11 +32,10 @@ for i = 1:len_sis
     endif
   endfor
 
+# Llamo la coef para reemplazar la parte de+dw y dn+ds.
   coef = -1;
+
 # Trabajar con el eje x
-# Llamo la coef para reemplazar la parte de+dw y coefY = dn+ds. Cuando uno de
-# ellos vale -1 la multiplicacion vardra negativo. En ese caso segun la
-# condicion Robin o Neumann los divisores
   ax = bx = cx = 0;
 
 # Recordar que 2 es E y 4 es W, generar los coeficientes correspondientes
@@ -88,7 +87,7 @@ for i = 1:len_sis
 # se suma la constante c.
 K(i, :) *= -k(i);
 K(i, i) += c(i);
-  
+
 endfor
 
 F = G;
