@@ -16,7 +16,7 @@ function [K,F] = fdm2d_gen_system(K,F,xnode,neighb,k,c,G)
 # un nodo del borde o no.
 
 len_sis = length(G);
-K = sparse(zeros(len_sis)); # No se si es necesario inicializar la matriz.
+##K = sparse(zeros(len_sis)); # No se si es necesario inicializar la matriz.
 
 for i = 1:len_sis
   # inicializar las distancias con 0
@@ -39,7 +39,7 @@ for i = 1:len_sis
   ax = bx = cx = 0;
 
 # Recordar que 2 es E y 4 es W, generar los coeficientes correspondientes
-  if (dist(2)*dist(4) == 0)
+  if (dist(2)*dist(4) < 1e-5)
     if (dist(2) == 0)
       cx = 2/(dist(4)*dist(4));
       bx = -cx;
@@ -56,7 +56,7 @@ for i = 1:len_sis
 
   ay = by = cy = 0;
 # Recordar que 1 es S y 3 es N, generar los coeficientes correspondientes
-  if (dist(1)*dist(3) == 0)
+  if (dist(1)*dist(3) < 1e-5)
     if (dist(1) == 0)
       ay = 2/(dist(3)*dist(3));
       by = -ay;
@@ -72,21 +72,16 @@ for i = 1:len_sis
   endif
 
 # Sumar los coeficientes a la matriz K
-  K(i,i) += bx + by;
+  K(i,i) = c(i) -k(i)*(bx + by);
 
 # Siguiendo la nomenclatura, [1 2 3 4] => [S E N W]
   coef = [cy ax ay cx];
 
   for j = 1:4
     if(neighb(i, j) != -1)
-      K(i, neighb(i, j)) += coef(j);
+      K(i, neighb(i, j)) = -k(i)*coef(j);
     endif
   endfor
-
-# La fila se multiplica por la constante -k y luego
-# se suma la constante c.
-K(i, :) *= -k(i);
-K(i, i) += c(i);
 
 endfor
 
