@@ -31,6 +31,23 @@ function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
 % xp - xw = [ x |_2 |_... |_n-1 | x ]
   Bw = xp(2: end-1)-malla(2:end-2);
 
+% A modo de complemento, por si esta equivocado se puede borrar:
+% Se supone que cada borde tienen sus coeficientes correspondientes. Si hablo de
+% de la frontera Oeste, el coeficiente es Bw = (xp - xw)/(xp - xW) con xW = xw.
+% Esto significa que Bw en este caso valdra 1. El proceso sera identico con
+% el tratamiento de Be con la frontera Este. Be = (xe - xp)/(xE - xp) siendo
+% xE = xe y Be = 1 en aquella frontera.
+% Falta agregarse el peso de cada frontera como se muestra en la siguiente
+% explicacion.
+
+% Be += [ x_| 2 | ... | n-1 | x_]
+  Be = [malla(2)-xp(1), Be, 1];
+
+% Bw += [_x | 2 | ... | n-1 |_x ]
+  Bw = [1, Bw, xp(end)-malla(end-1)];
+
+
+
 
 
 endfunction
