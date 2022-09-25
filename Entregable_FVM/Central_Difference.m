@@ -1,7 +1,8 @@
-function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
+function [Phi Pex PeL]= Central_Difference(malla, phi_1, phi_L, k, pCp, G, v)
 
-% Reconstruir la k
+% Reconstruir la k, L longitud global
   k = k/pCp;
+  L = malla(end);
 
 % len -> cantidad de "caras"
   len = length(malla);
@@ -17,10 +18,13 @@ function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
   dx = xp(2:end) - xp(1:end-1); # la longitud esta reducida, por lo que se recurre usar end.
 
 % De -> k/de, coeficiente acompanado al termino Este del difusivo
-  De = k/dx(1:end-1);
+  %De = k./dx(2:end);
 
 % Dw -> k/dw, coeficiente acompanado al termino Oeste del difusivo
-  Dw = k/dx(2:end);
+  %Dw = k./dx(1:end-1);
+
+% Suposicion que De = Dw = k/dx ya que depende solamente por donde esta posicionado
+  De = Dw = k./dx;
 
 % Las coeficientes de peso Be y Bw se tienen en cuenta solamente las celdas
 % interiores que no se tocan con los bordes. [ x | 2 | ... | n-1 | x ] los cuales
@@ -70,7 +74,7 @@ function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
 % la cantidad de distancia entre pares de celdas es n-1.
 
 % aE = (De - ve*Be)/Dx
-  aE = [(De - v*Be)/Dx), 0];
+  aE = [(De - v*Be)/Dx, 0];
 
 % aW = (Dw + vw*Bw)/Dx
   aW = [0, (Dw + v*Bw)/Dx];
@@ -80,11 +84,20 @@ function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
 
 % Creacion de la matriz K. Recordar que el centro de celda hay n, la cnatidad de
 % centro de caras hay n+2 que es len+1.
-K = sparse( [[1:len+1]  , [2:len+1] , [1:len]]    ,
-            [[1:len+1]  , [1:len]   , [2:len+1]]  ,
+K = sparse( [[1:len+1]  , [2:len]   , [2:len]]    ,
+            [[1:len+1]  , [1:len-1] , [3:len+1]]  ,
             [[1, ap, 1] , [aW]      , [aE]]       );
 
-f = []
+% Definicion de f como un vector; si G es un escalar lo pasa a un vector
+if(length(G) == 1)
+  G = ones(1, length(xp))*G;
+endif
+f = [phi_1, G, phi_L]';
+
+Phi = K\f;
 
 Pex = max(v*Dx/k);
+PeL = (v*L/k);
+
+
 endfunction
