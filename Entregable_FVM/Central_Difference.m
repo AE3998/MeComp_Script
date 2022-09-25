@@ -4,13 +4,14 @@ function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
 % len -> cantidad de "caras"
   len = length(malla);
 
-% Dx -> longitud de cada celda.
+% Dx -> longitud de cada celda.[_x_]
   Dx = malla(2:len)-malla(1:len-1);
 
-% xp -> posicion del centro de cada celda
+% xp -> posicion del centro de cada celda [ x ]
   xp = malla(1:len-1) + Dx/2;
 
 % dx -> distancia entre cada par del centro de celda (puede hacer falta las fronteras)
+% [ 1_|_2 ... | n-1_|_n ]
   dx = xp(2:end) - xp(1:end-1); # la longitud esta reducida, por lo que se recurre usar end.
 
 % De -> k/de, coeficiente acompanado al termino Este del difusivo
@@ -36,15 +37,31 @@ function [Phi Pex]= Central_Difference(malla, k, pCp, G, v)
 % de la frontera Oeste, el coeficiente es Bw = (xp - xw)/(xp - xW) con xW = xw.
 % Esto significa que Bw en este caso valdra 1. El proceso sera identico con
 % el tratamiento de Be con la frontera Este. Be = (xe - xp)/(xE - xp) siendo
-% xE = xe y Be = 1 en aquella frontera.
-% Falta agregarse el peso de cada frontera como se muestra en la siguiente
+% xE = xe y Be = 1 en aquella frontera. Se calcula de esta manera ya que el centro
+% de cada frontera es tratado como un "centro de celda adicional".
+% Se agrega el peso de cada frontera como se muestra en la siguiente
 % explicacion.
 
 % Be += [ x_| 2 | ... | n-1 | x_]
-  Be = [malla(2)-xp(1), Be, 1];
+%  Be = [malla(2)-xp(1), Be, 1];
 
 % Bw += [_x | 2 | ... | n-1 |_x ]
-  Bw = [1, Bw, xp(end)-malla(end-1)];
+%  Bw = [1, Bw, xp(end)-malla(end-1)];
+
+% Repasando la teoria, parece que nuna hay un tratamiento con el peso de la
+% frontera. -> [ x_] y [_x ] no van creo. De hecho el tamano del vector tampoco
+% se coinciden si luego lo combino con el vector de dx. De esta manera se crea un sistema
+% de ecuacion con los extremos 1, con las incongnitas los centros del celdas.
+
+% 1er Suposicion, la d esta bien y B estan mal. no deberia incluirse las fronteras
+% En este caso -aw,2 y -aw,m del sistema seran 0.
+
+
+% Be += [ x_| 2 | ... | n-1 | x ]
+  Be = [malla(2)-xp(1), Be];
+
+% Bw += [ x | 2 | ... | n-1 |_x ]
+  Bw = [Bw, xp(end)-malla(end-1)];
 
 
 
