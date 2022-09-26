@@ -24,9 +24,9 @@ xp = malla(1:end-1) + Dx/2;
 x = [x0, xp, xL];
 
 % Plots
-plot(x, 1, 'ro-');
-grid on;
-hold on;
+##plot(x, 1, 'ro-');
+##grid on;
+##hold on;
 plot(x, Phi)
 
 

@@ -36,11 +36,18 @@ function [Phi Pex PeL K]= Central_Difference(malla, phi_1, phi_L, k, pCp, G, v)
 % tamano n-1 siendo n la cantidad del centro de celda. Esto se debe a que
 % la cantidad de distancia entre pares de celdas es n-1.
 
+% Esto debe incluir las
+% las condiciones de borde, los los cuales Be y Bw seran 1.
+
+DeCB = 2*k/Dx(end);
+DwCB = 2*k/Dx(1);
+
+
 % aE = (De - ve*Be)/Dx
-  aE = [(De - v*Be)./Dx(1:end-1), 0];
+  aE = [(De - v*Be)./Dx(1:end-1), (DeCB - v)./Dx(end)];
 
 % aW = (Dw + vw*Bw)/Dx
-  aW = [0, (Dw + v*Bw)./Dx(2:end)];
+  aW = [(DwCB + v)./Dx(1), (Dw + v*Bw)./Dx(2:end)];
 
 % ap = aE + aW
   ap = aE + aW;
