@@ -6,8 +6,20 @@ c = [1 2 3]
 K*Phi
 exp(c)
 
+i = 0;
+if(!i)
+  i += 10;
+endif
+i
 
+x = {
+  a = 1;
+  b = 2;
+}
+
+x.a
   dx = xp(2:end) - xp(1:end-1); # la longitud esta reducida, por lo que se recurre usar end.
+
 
 % De -> k/de, coeficiente acompanado al termino Este del difusivo
   %De = k./dx(2:end);
