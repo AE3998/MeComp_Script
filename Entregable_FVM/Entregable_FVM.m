@@ -27,7 +27,10 @@ x = [x0, xp, xL];
 ##plot(x, 1, 'ro-');
 ##grid on;
 ##hold on;
-plot(x, Phi)
+vk = v/k;
+sol = G/v*(x - (1-exp(vk*x))/(1-exp(vk)));
 
-
+plot(x, Phi);
+hold on;
+plot(x, sol);
 

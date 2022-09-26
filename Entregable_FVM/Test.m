@@ -4,7 +4,7 @@ c = [1 2 3]
 1./c
 
 K*Phi
-
+exp(c)
 
 
   dx = xp(2:end) - xp(1:end-1); # la longitud esta reducida, por lo que se recurre usar end.
