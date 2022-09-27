@@ -11,9 +11,9 @@ function [xnode] = genMalla(x0,xL,r,n)
     dx = L/(n-1);
     xnode = x0:dx:xL;
   else
-    S = (1-r^n)/(1-r)
+    S = (1-r^n)/(1-r);
     dx = L/S;
-    xnode = [x0]
+    xnode = [x0];
     x = x0;
     for i=0:n-1
       dxi = r^i*dx;

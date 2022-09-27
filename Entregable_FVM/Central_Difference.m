@@ -46,27 +46,26 @@ function [Phi Pex PeL K]= Central_Difference(malla, phi_CB, parametros, CD)
 
 % Esto incluye las condiciones de borde, con los cuales Be y Bw seran 1,
 % y el coeficiente del difusivo (k/Dx) valdran en este caso 2*k/Dx en cada lado.
-
+BeCB = BwCB = 1;
 DeCB = 2*k/Dx(end); % [ x | 2 | ... | n-1 | x_]
 DwCB = 2*k/Dx(1);   % [_x | 2 | ... | n-1 | x ]
 
 % Se tratara como Upwind si el parametro de entrada CD es false.
   if(!CD)
     if(v>=0)
-      Be = 0;
+      Be = BeCB = 0;
       Bw = 1;
     else
       Be = 1;
-      Bw = 0;
+      Bw = BwCB = 0;
     endif
   endif
 
-
 % aE = (De - ve*Be)/Dx
-  aE = [(De - v*Be)./Dx(1:end-1), (DeCB - v)./Dx(end)];
+  aE = [(De - v*Be)./Dx(1:end-1), (DeCB - v*BeCB)./Dx(end)];
 
 % aW = (Dw + vw*Bw)/Dx
-  aW = [(DwCB + v)./Dx(1), (Dw + v*Bw)./Dx(2:end)];
+  aW = [(DwCB + v*BwCB)./Dx(1), (Dw + v*Bw)./Dx(2:end)];
 
 % ap = aE + aW
   ap = aE + aW;

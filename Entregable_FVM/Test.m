@@ -17,7 +17,18 @@ x = {
   b = 2;
 }
 
-x.a
+x = -10:0.1:10;
+plot (x, sin (x));
+title ("sin(x) for x = -10:0.1:10 ");
+xlabel ("x");
+ylabel ("sin (x)");
+text (pi, 0.7, "arbitrary text %f");
+legend ("sin (x)");
+
+h = 10;
+z = cstrcat("hola ", num2str(h))
+printf("%i", i)
+
   dx = xp(2:end) - xp(1:end-1); # la longitud esta reducida, por lo que se recurre usar end.
 
 
