@@ -29,10 +29,9 @@ for P = 1:length(G)
     endif
   endfor
   % Termino cV
-  K(P, P) += c(P)*cell(P).v;
+  K(P, P) += c(P)*cells(P).v;
+  F(P) = G(P).*cells(P).v;
   endfor
-
-F = G.*cell(:).v;
 
 % Salida:
 % * K: matriz del sistema (difusión + reacción) con modificaciones luego del ensamble.
