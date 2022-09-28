@@ -16,8 +16,9 @@ function [K,F] = fdm2d_dirichlet(K,F,DIR)
 # Reconstruir la matriz K. Anular toda las filas que corresponden a los nodos
 # del borde Dirichlet y asignar 1 solamente en el diagonal principal.
   K(DIR(:, 1), :) = 0;
-  K(DIR(:, 1), DIR(:, 1) = 1;
-
+  for i = DIR(:, 1)'
+    K(i, i) = 1;
+  endfor
 % Salida:
 % * K: matriz del sistema (difusión + reacción) luego de realizar las simplificaciones
 %   que surgen de aplicar la condición de borde Dirichlet.
