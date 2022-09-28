@@ -16,6 +16,8 @@ for P = 1:length(G)
   ki = [cells(P).ks, cells(P).ke, cells(P).kn, cells(P).kw];
   di = [cells(P).ds, cells(P).de, cells(P).dn, cells(P).dw];
   ai = [cells(P).as, cells(P).ae, cells(P).an, cells(P).aw];
+  
+  Kpp = c(P)*cells(P).v;
 
   % Los coeficientes de cada vecino
   Ri = ki.*ai./di;
@@ -24,12 +26,12 @@ for P = 1:length(G)
   % se suma los coeficientes.
   for i = 1:4
     if(neighb(P, i) != -1)
-      K(P,P) += Ri(i);
+      Kpp += Ri(i);
       K(P, neighb(P, i)) = -Ri(i);
     endif
   endfor
   % Termino cV
-  K(P, P) += c(P)*cells(P).v;
+  K(P, P) = Kpp;
   F(P) = G(P).*cells(P).v;
   endfor
 
