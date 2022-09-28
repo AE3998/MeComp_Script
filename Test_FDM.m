@@ -51,6 +51,6 @@ norm(dist, "rows")
 [1,2,3](3)
 % Esto puede ser la causa en que el metodo reducido no funciona.
 A = [1 0]
-A([1 1]) += 5
+A([1; 1; 1]) += [2 5 100]
 
 
