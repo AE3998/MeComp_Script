@@ -13,9 +13,9 @@ function [K,F] = fvm2d_gen_system(K,F,neighb,cells,c,G)
 
 for P = 1:length(G)
   % Seguir la nomenclatura [1 2 3 4] -> [s e n w] en los parametros
-  ki = [cell(P).ks, cell(P).ke, cell(P).kn, cell(P).kw];
-  di = [cell(P).ds, cell(P).de, cell(P).dn, cell(P).dw];
-  ai = [cell(P).as, cell(P).ae, cell(P).an, cell(P).aw];
+  ki = [cells(P).ks, cells(P).ke, cells(P).kn, cells(P).kw];
+  di = [cells(P).ds, cells(P).de, cells(P).dn, cells(P).dw];
+  ai = [cells(P).as, cells(P).ae, cells(P).an, cells(P).aw];
 
   % Los coeficientes de cada vecino
   Ri = ki.*ai./di;
