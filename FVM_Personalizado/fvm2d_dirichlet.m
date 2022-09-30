@@ -15,20 +15,22 @@ function [K,F] = fvm2d_dirichlet(K,F,cells,DIR)
 %       3) N  1�7 North  1�7 Norte
 %       4) W  1�7 West  1�7 Oeste
 
-for P = DIR(:, 1)'
+for j = 1:length(DIR(:, 1))
+  P = DIR(j, 1);
+
   % Seguir la nomenclatura [1 2 3 4] -> [s e n w] en los parametros
   k = [cells(P).ks, cells(P).ke, cells(P).kn, cells(P).kw];
   d = [cells(P).ds, cells(P).de, cells(P).dn, cells(P).dw];
   a = [cells(P).as, cells(P).ae, cells(P).an, cells(P).aw];
 
   % Extraer el indice i
-  i = DIR(P, 3);
+  i = DIR(j, 3);
 
   % Despejar el coeficiente que tiene la condicion del borde
   R = k(i)*a(i)/d(i);
 
   K(P, P) += R;
-  F(P) += R*DIR(P, 2);
+  F(P) += R*DIR(j, 2);
 endfor
 
 % Salida:
