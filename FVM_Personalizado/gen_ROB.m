@@ -1,6 +1,6 @@
-function DIR = gen_DIR(borde, val, dir)
+function ROB = gen_ROB(borde, h, Tinf, dir)
 
-  DIR = [];
+  ROB = [];
   for c = 1:length(dir)
     v = [];
     switch dir(c)
@@ -14,6 +14,6 @@ function DIR = gen_DIR(borde, val, dir)
         v = borde.W;
     endswitch
     lenv = length(v);
-    DIR = [DIR; v, ones(lenv, 1)*val(c), ones(lenv, 1)*dir(c)];
+    ROB = [ROB; v, ones(lenv, 1)*h(c), ones(lenv, 1)*Tinf(c), ones(lenv, 1)*dir(c)];
   endfor
 endfunction

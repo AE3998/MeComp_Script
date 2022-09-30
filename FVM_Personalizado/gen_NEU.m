@@ -1,6 +1,6 @@
-function DIR = gen_DIR(borde, val, dir)
+function NEU = gen_NEU(borde, val, dir)
 
-  DIR = [];
+  NEU = [];
   for c = 1:length(dir)
     v = [];
     switch dir(c)
@@ -14,6 +14,6 @@ function DIR = gen_DIR(borde, val, dir)
         v = borde.W;
     endswitch
     lenv = length(v);
-    DIR = [DIR; v, ones(lenv, 1)*val(c), ones(lenv, 1)*dir(c)];
+    NEU = [NEU; v, ones(lenv, 1)*val(c), ones(lenv, 1)*dir(c)];
   endfor
 endfunction

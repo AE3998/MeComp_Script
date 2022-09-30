@@ -1,43 +1,23 @@
 close all; clear all; more off;
 
-% El generador de malla NO se tiene en cuenta el problema del ancho de banda.
+% El generador de malla NO se tiene en cuenta el cuestion de ancho de banda.
 xmalla = [0, 0.3, 0.5, 0.7, 1];
 ymalla = [0, 0.4, 0.6, 1];
 
-% Generador de malla xnode y los icone
+% Generador de malla xnode, icone y los indices de borde
 xnode = gen_xnode(xmalla, ymalla);
 icone = gen_icone(xmalla, ymalla);
-
 borde = gen_borde(xmalla, ymalla);
 
+% DIR = gen_DIR(borde, val, dir);
 DIR = gen_DIR(borde, [5 10], [4 2]);
-DIR = gen_DIR(xmalla, ymalla, [12 20], [1 3]);
+DIR = gen_DIR(borde, 20, 3);
 
+% NEU = gen_NEU(borde, val, dir);
+NEU = gen_NEU(borde, [5 10], [4 2]);
 
-
-DIR = [
-       3, 20.0000000000000000, 3;
-       6, 20.0000000000000000, 3;
-       9, 20.0000000000000000, 3;
-      12, 20.0000000000000000, 3;
-];
-
-
-NEU = [
-       1, 5.0000000000000000, 4;
-       2, 5.0000000000000000, 4;
-       3, 5.0000000000000000, 4;
-      10, 10.0000000000000000, 2;
-      11, 10.0000000000000000, 2;
-      12, 10.0000000000000000, 2;
-];
-
-ROB = [
-       1, 5.0000000000000000, 15.0000000000000000, 1;
-       4, 5.0000000000000000, 15.0000000000000000, 1;
-       7, 5.0000000000000000, 15.0000000000000000, 1;
-      10, 5.0000000000000000, 15.0000000000000000, 1;
-];
+% ROB = gen_ROB(borde, h, Tinf, dir);
+ROB = gen_ROB(borde, [1 3 4], [11 34 3], [2 4 1]);
 
 disp('---------------------------------------------------------------');
 disp('Inicializando modelo de datos...');
