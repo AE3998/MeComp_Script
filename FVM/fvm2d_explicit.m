@@ -19,14 +19,14 @@ function [PHI,Q] = fvm2d_explicit(K,F,cells,neighb,model,dt)
 % componente en sentido y, Qy. Se devuelve un resultado por cada iteración del
 % método (2xnit columnas).
 % ----------------------------------------------------------------------
-    disp('Iniciando el calculo de essquema temporal explicito...')
+    %disp('Iniciando el calculo de essquema temporal explicito...')
     coef = dt/(model.rho*model.cp);
     PHI = PHI_n = PHI_next = model.PHI_n;
 
-    Q = flux(PHI, cells, neighb;
+    Q = fvm2d_flux(PHI, cells, neighb;
     len = length(F);
 
-    for i = 1:model.maxit;
+    for i = 1:model.maxit
       PHI_next = coef*F + (eye(len) - coef*K)*PHI_n;
 
       % Error relativo
@@ -38,11 +38,11 @@ function [PHI,Q] = fvm2d_explicit(K,F,cells,neighb,model,dt)
       Q = [Q, Q_next];
 
       if(err < model.tol)
-        disp('Metodo explicito ha completado su calculo.');
+        %disp('Metodo explicito ha completado su calculo.');
         return;
       endif
     endfor
-    disp('Metodo explicito ha llegado la maxima iteracion.');
+    %disp('Metodo explicito ha llegado la maxima iteracion.');
 endfunction
 
 

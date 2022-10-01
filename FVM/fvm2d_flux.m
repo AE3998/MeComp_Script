@@ -22,7 +22,7 @@ function [Q] = fvm2d_flux(PHI,cells,neighb)
       N = neighb(i, 3);
       W = neighb(i, 4);
 
-      if(E != -1 and W != -1)
+      if(E != -1 && W != -1)
         de = cells(i).de;
         dw = cells(i).dw;
 
@@ -38,7 +38,7 @@ function [Q] = fvm2d_flux(PHI,cells,neighb)
         Qx(i) = -cells(i).kw * (PHI(i) - PHI(W))/(cells(i).dw);
       endif
 
-      if(N != -1 and S != -1)
+      if(N != -1 && S != -1)
         dn = cells(i).dn;
         ds = cells(i).ds;
 

@@ -20,7 +20,7 @@ function [PHI,Q] = fvm2d_implicit(K,F,cells,neighb,model,dt)
 % método (2xnit columnas).
 % ----------------------------------------------------------------------
     PHI = PHI_n = PHI_next = model.PHI_n;
-    Q = flux(PHI, cells, neighb);
+    Q = fvm2d_flux(PHI, cells, neighb);
     pCp = model.p * model.cp;
     coef = pCp/dt;
     len = length(F);
