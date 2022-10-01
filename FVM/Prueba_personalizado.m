@@ -18,6 +18,7 @@ tol = 1e-05;
 
 % Esquema Temporal: [0] Explicito, [1] Implicito, [X] Estacionario
 ts = 2;
+dt = 0.1;
 
 % Definicion de los datos de CB
 
@@ -69,6 +70,7 @@ model.G = ones(nc, 1)*G;
 
 % Esquema Temporal: [0] Explicito, [1] Implicito, [X] Estacionario
 model.ts = ts;
+model.dt = dt;
 
 % Parametros para esquemas temporales
 model.rho = rho;

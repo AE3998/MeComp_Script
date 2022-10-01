@@ -23,7 +23,7 @@ function [PHI,Q] = fvm2d_explicit(K,F,cells,neighb,model,dt)
     coef = dt/(model.rho*model.cp);
     PHI = PHI_n = PHI_next = model.PHI_n;
 
-    Q = fvm2d_flux(PHI, cells, neighb;
+    Q = fvm2d_flux(PHI, cells, neighb);
     len = length(F);
 
     for i = 1:model.maxit

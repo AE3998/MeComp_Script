@@ -122,6 +122,9 @@ model.cp = 1.0000000000000000;
 model.maxit =            1;
 model.tol = 1.000000e-05;
 
+% Parametro agregado por MI
+model.dt = 0.1;
+
 % Condición inicial
 model.PHI_n = mean(DIR(:,2))*ones(model.ncells,1);
 
