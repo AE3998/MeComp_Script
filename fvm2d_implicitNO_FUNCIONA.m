@@ -24,19 +24,17 @@ function [PHI,Q] = fvm2d_implicit(K,F,cells,neighb,model,dt)
     pCp = model.rho * model.cp;
     coef = pCp/dt;
     len = length(F);
-    Kinv = coef*eye(len) + K;
+    Kinv = coef*eye(len, len) + K;
 
     for i = 1:model.maxit
-      f = (F + coef*PHI_n);
-      PHI_next = Kinv\f;
+      PHI_next = Kinv\(F + coef*PHI_n);
       PHI = [PHI PHI_next];
-
-      err = norm(PHI_next - PHI_n)/norm(PHI_next);
       PHI_n = PHI_next;
-      
+
       Q_next = fvm2d_flux(PHI_next, cells, neighb);
       Q = [Q Q_next];
 
+      err = norm(PHI_next - PHI_n)/norm(PHI_next);
       if(err < model.tol)
         %disp('El metodo implicito ha completado su calculo.');
         return;

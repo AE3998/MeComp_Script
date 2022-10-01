@@ -18,7 +18,7 @@ tol = 1e-05;
 
 % Esquema Temporal: [0] Explicito, [1] Implicito, [X] Estacionario
 ts = 2;
-dt = 0.1;
+dt = 0.01;
 
 % Definicion de los datos de CB
 

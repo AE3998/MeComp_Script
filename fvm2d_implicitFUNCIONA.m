@@ -19,43 +19,32 @@ function [PHI,Q] = fvm2d_implicit(K,F,cells,neighb,model,dt)
 % componente en sentido y, Qy. Se devuelve un resultado por cada iteración del
 % método (2xnit columnas).
 % ----------------------------------------------------------------------
-    PHI = PHI_n = PHI_next = model.PHI_n;
-    Q = fvm2d_flux(PHI, cells, neighb);
-    pCp = model.rho * model.cp;
-    coef = pCp/dt;
-    len = length(F);
-    Kinv = coef*eye(len) + K;
+    N = length(F);
+    nt = model.maxit;
+    tol = model.tol;
+    p = model.rho;
+    cp = model.cp;
 
-    for i = 1:model.maxit
-      
-      if i == 1000
-        [K, F] = fvm2d_gen_system(K, F, neighb, cells, model.c, zeros(len));
-        [F] = fvm2d_neumann(F, cells, NEU);
-        [K, F] = fvm2d_robin(K, F, cells, ROB);
-        [K, F] = fvm2d_dirichlet(K, F, cells, DIR);
-      endif
-      
-      PHI_next = Kinv\(F + coef*PHI_n);
-      PHI = [PHI PHI_next]
-      
-      i
-      printf("\n");
-      
-      PHI_n = PHI_next;
+    PHI = model.PHI_n;
+    PHI_prev = model.PHI_n;
+    Q = fvm2d_flux(PHI,cells,neighb);
+    I = eye(N);
+    A = (p*cp)/dt;
+    Knew = A*I + K;
+    for i = 1:nt
+        Fnew = F + A*PHI_prev;
+        PHI_new = Knew\Fnew;
+        PHI = [PHI PHI_new];
+        err = norm(PHI_new-PHI_prev)/norm(PHI_new);
+        Qnew = fvm2d_flux(PHI_new,cells,neighb);
+        Q = [Q Qnew];
+        PHI_prev = PHI_new;
+        if(err < tol)
+            break;
+        end
+    end
 
-      Q_next = fvm2d_flux(PHI_next, cells, neighb);
-      Q = [Q Q_next];
-
-      err = norm(PHI_next - PHI_n)/norm(PHI_next)
-      model.tol
-      if(err < model.tol)
-        %disp('El metodo implicito ha completado su calculo.');
-        return;
-      endif;
-
-    endfor
-    %disp('El metodo implicito ha llegado su maximo iteracion.');
-endfunction
+end
 
 
 
