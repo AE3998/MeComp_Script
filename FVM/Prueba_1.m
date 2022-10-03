@@ -1,14 +1,14 @@
 close all; clear all; more off; clc;
 
 % El generador de malla NO se tiene en cuenta el cuestion de ancho de banda.
-xmalla = [0, 0.3, 0.5, 0.7, 1];
-ymalla = [0, 0.4, 0.6, 1];
+xmalla = [0, 0.1, 0.3, 0.6];
+ymalla = [0, 0.1, 0.2, 0.3];
 
 % Definicion de los parametros de entrada
 th = 1;
-k = 2;
-c = 8;
-G = 12;
+k = 100;
+c = 0;
+G = 0;
 
 % Definicion de los parametros no estacionario
 rho = 1;
@@ -23,13 +23,13 @@ dt = 0.01;
 % Definicion de los datos de CB
 
 % Dirichlet
-val_DIR = 20; dir_DIR = 3;
+val_DIR = 50; dir_DIR = 4;
 
 % Neumann
-val_NEU = [5 10]; dir_NEU = [4 2];
+val_NEU = [100 0]; dir_NEU = [1 2];
 
 % Robin
-h_ROB = 5; Tinf_ROB = 15; dir_ROB = 1;
+h_ROB = 20; Tinf_ROB = 25; dir_ROB = 3;
 
 % mode ---> modo de visualizacion:
 %           [0] 2D - Con malla
@@ -61,6 +61,7 @@ DIR = gen_DIR(borde, val_DIR, dir_DIR);
 
 % NEU = gen_NEU(borde, val, dir);
 NEU = gen_NEU(borde, val_NEU, dir_NEU);
+NEU(1, 2) = 0;
 
 % ROB = gen_ROB(borde, h, Tinf, dir);
 ROB = gen_ROB(borde, h_ROB, Tinf_ROB, dir_ROB);
@@ -81,7 +82,10 @@ nc = (length(xmalla)-1)*(length(ymalla)-1);
 
 model.ncells = size(icone,1);
 model.th = th;
+
 model.k = ones(nc, 1)*k;
+model.k(1:3) = 0.001;
+
 model.c = ones(nc, 1)*c;
 model.G = ones(nc, 1)*G;
 

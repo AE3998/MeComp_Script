@@ -7,14 +7,14 @@ function [K,F,cells] = fvm2d_initialize(xnode,icone,neighb,th,k)
     F = sparse(NN,1);
 
 
-    %% Definición de celdas. Arreglo de NN structs para almacenar los parámetros 
+    %% Definición de celdas. Arreglo de NN structs para almacenar los parámetros
     %  de cada celda
     cells = struct('ds', {}, 'de', {}, 'dn', {}, 'dw', {},...
                    'as', {}, 'ae', {}, 'an', {}, 'aw', {},...
                    'ks', {}, 'ke', {}, 'kn', {}, 'kw', {},...
                    'ts', {}, 'te', {}, 'tn', {}, 'tw', {}, 'tc', {},...
                    'dx', {}, 'dy', {}, 'v',{}, 'cx', {}, 'cy', {});
-    
+
     %% Bucle principal para especificar todos los valores de las celdas
     for i = 1 : NN
         % Vecinos de la celda (i)
@@ -22,23 +22,23 @@ function [K,F,cells] = fvm2d_initialize(xnode,icone,neighb,th,k)
         E = neighb(i,2);
         N = neighb(i,3);
         W = neighb(i,4);
-        
+
         % Nodos relevantes para obtener la geometría de la celda (i)
         P1 = icone(i,1);
         P2 = icone(i,2);
         P3 = icone(i,3);
-        
+
         %% Inicializar dx (ancho), dy (alto) y v (volumen) de la celda
         dx = abs(xnode(P2,1) - xnode(P1,1));
         dy = abs(xnode(P3,2) - xnode(P2,2));
         v = dx*dy*th;
-        
+
         cells(i).dx = dx; cells(i).dy = dy; cells(i).v = v;
-        
+
         % Inicializar el centroide de la celda
         cells(i).cx = xnode(P1,1) + dx/2;
         cells(i).cy = xnode(P1,2) + dy/2;
-        
+
         %% Inicializar las distancias entre centroides de celdas
         if S ~= -1
             S2 = icone(S, 2);
@@ -79,19 +79,19 @@ function [K,F,cells] = fvm2d_initialize(xnode,icone,neighb,th,k)
         else
             dw = dx/2;
         end
-        
+
         cells(i).ds = ds; cells(i).de = de; cells(i).dn = dn; cells(i).dw = dw;
-        
+
         %% Inicializar las áreas de las caras de la celda (i)
         as = dx*th;
         ae = dy*th;
         an = dx*th;
         aw = dy*th;
-        
+
         cells(i).as = as; cells(i).ae = ae; cells(i).an = an; cells(i).aw = aw;
-        
+
         %% Inicialización de las conductividades en las caras de la celda (i)
-        ks = k(i); ke = k(i); kn = k(i); kw = k(i);
+        ks = k(i); ke = k(i); kn = k(i); kw = k(i); P = i;
 
         if(S ~= -1)
             if (k(i) ~= k(S))
@@ -140,9 +140,9 @@ function [K,F,cells] = fvm2d_initialize(xnode,icone,neighb,th,k)
                 kw = k(P)*k(W)/(f*k(P) + (1-f)*k(W));
             end
         end
-        
+
         cells(i).ks = ks; cells(i).ke = ke; cells(i).kn = kn; cells(i).kw = kw;
-        
+
         %% Inicialización de las temperaturas de la celda como NaN (útil para graficar)
         cells(i).ts = nan; cells(i).te = nan; % valores al sur y al este, respectivamente
         cells(i).tn = nan; cells(i).tw = nan; % valores al norte y al oeste, respectivamente
