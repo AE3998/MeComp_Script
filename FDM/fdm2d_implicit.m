@@ -20,7 +20,30 @@ function [PHI, Q] = fdm2d_implicit(K,F,xnode,neighb,model,dt)
 %   de flujo de calor, representado por un par (Qx,Qy). Cada par de columnas 
 %   representa una iteración del esquema temporal (en total 2×nit columnas).
 % ----------------------------------------------------------------------
-
-    PHI = [];
-    Q = [];
-end
+    disp('Se inicializa al calculo del modelo IMPLICITO...');
+    nt = model.maxit;
+    N = size(xnode,1);
+    tol = model.tol;
+    PHI = model.PHI_n;
+    PHIn = model.PHI_n;
+    Q = fdm2d_flux(PHI,neighb,xnode,model.k);
+    a = (model.rho*model.cp)/dt;
+    I = eye(N,N);
+    Ks = a*I + K;
+    for i=1:nt
+        B = F + a*PHIn;
+        PHIa = Ks\B;
+        err = norm(PHIa-PHIn,2)/norm(PHIa,2);
+        PHIn = PHIa;
+        PHI = [PHI PHIa];      
+        Qa = fdm2d_flux(PHIa,neighb,xnode,model.k);
+        Q = [Q Qa];
+        if (err < tol)
+          disp('Ha completado el calculo IMPLICITO.');
+          printf("\n Cantidad de iteracion: ");
+          i
+            return;
+        endif
+    endfor
+    disp('Llego la maxima iteracion IMPLICITO.');
+endfunction

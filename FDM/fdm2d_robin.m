@@ -23,6 +23,9 @@ function [K,F] = fdm2d_robin(K,F,xnode,neighb,ROB)
 # sumarlo tanto en el diagonal principal a aquellos nodos que corresponden
 # al nodo del borde robin, como el miembro derecho F del sistema multiplicado
 # por la phi_inf.
+if (size(ROB, 1) == 0)
+  return;
+endif
 
   indice_P = ROB(:, 1);
   len_P = length(indice_P);
