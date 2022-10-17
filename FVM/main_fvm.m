@@ -1,4 +1,4 @@
-close all; clear all; more off;
+close all; clear all; more off; clc;
 
 xnode = [
     0,0;
@@ -1939,24 +1939,29 @@ model.ncells = size(icone,1);
 
 model.th = 1.0;
 
-model.k = ones(model.ncells,1) * 1;
+model.k = ones(model.ncells,1) * 10;
 
 model.c = zeros(model.ncells,1);
 
-model.G = ones(model.ncells,1) * 1;
+xind = xnode(icone(:, 1), 1) < 6;
+
+
+% asignarle 100 donde x< 6, 0 x>= 6
+%model.G = xind*100; 
+model.G = zeros(size(icone, 1)); 
 
 % Esquema Temporal: [0] Explícito, [1] Implícito, [X] Estacionario
-model.ts = 2;
+model.ts = 1;
 
 % Parámetros para esquemas temporales
 model.rho = 1.0;
 model.cp = 1.0;
-model.maxit = 10;
+model.maxit = 600;
 model.tol = 1e-05;
 model.dt = 1;
 
 % Condición inicial
-model.PHI_n = mean(DIR(:,2))*ones(model.ncells,1);
+model.PHI_n = zeros(model.ncells,1);
 
 disp('Iniciando el método numérico...');
 

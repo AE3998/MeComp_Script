@@ -1945,24 +1945,21 @@ model.k = ones(model.nnodes,1) * 10;
 
 model.c = zeros(model.nnodes,1);
 
-xind = xnode(:, 1) < 6;
-
-% asignarle 100 donde x< 6, 0 x>= 6
-model.G = xind*100; 
+model.G = ones(model.nnodes,1) * 100;
 
 % Esquema Temporal: [0] Explícito, [1] Implícito, [X] Estacionario
-model.ts = 2;
+model.ts = 1;
 
 % Parámetros para esquemas temporales
 model.rho   = 1.0;
 model.cp    = 1.0;
 model.maxit = 600;
 model.tol   = 1e-05;
-model.dt = 1;
+model.dt = 0.25;
 
 % Condición inicial
+%model.PHI_n = mean(DIR(:,2))*ones(model.nnodes,1);
 model.PHI_n = zeros(model.nnodes,1);
-
 disp('Iniciando el método numérico...');
 
 % Llamada principal al Método de Diferencias Finitas
