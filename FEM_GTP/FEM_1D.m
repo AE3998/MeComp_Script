@@ -14,15 +14,19 @@
 %   qu == 0 --> funcion lineal
 
 
-function [T] = FEM_1D(xnode,qu,k,c,G, DIR, NEU, ROB)
+function [xn, T] = FEM_1D(xnode,qu,pmt, DIR, NEU, ROB)
 
-     [Klm Fl] = gen_system_Quad(xnode,k,c,G);
+      k = pmt.k;
+      c = pmt.c;
+      G = pmt.G;
 
-##    if qu
-##      [Klm Fl] = gen_system_Quad(xnode,k,c,G);
-##    else
-##      [Klm Fl] = gen_system_Lineal(xnode,k,c,G);
-##    endif
+##     [Klm Fl] = FEM_1D_gen_system_Quad(xnode,k,c,G);
+
+    if qu
+      [Klm Fl] = FEM_1D_gen_system_Quad(xnode,k,c,G);
+    else
+      [Klm Fl] = FEM_1D_gen_system_Lineal(xnode,k,c,G);
+    endif
 
     % CB Dirichlet
     for i = 1:size(DIR, 1);
@@ -62,9 +66,29 @@ function [T] = FEM_1D(xnode,qu,k,c,G, DIR, NEU, ROB)
       endif
     endif
 
-##    full(Klm)
-##    full(Fl)
     % Resolucion del sist. de ecuaciones
-    T = Klm\Fl;
+    switch (pmt.ts)
+    case 0
+      % dt explicito, numero de Fourier k = k/pCp cuando pCp != 0
+      % Fo = k*dt/dx^2 < 1 => dt < dx^2/k
 
-end
+      dx_prom = mean([xnode(2:end) - xnode(1:end-1)]);
+##      dx_prom = max([xnode(2:end) - xnode(1:end-1)]);
+##      dx_prom = min([xnode(2:end) - xnode(1:end-1)]);
+
+      pmt.dt = (dx_prom.^2)/(pmt.k/ (pmt.rho * pmt.Cp));
+      T = FEM_1D_explicit(Klm, Fl, pmt);
+    case 1
+      T = FEM_1D_implicit(Klm, Fl, pmt);
+    otherwise
+      T = Klm\Fl;
+    endswitch
+
+    % Reformulacion de xnode si se trata de una malla no uniforme
+    if qu
+      xn = sort([xnode, (xnode(2:end) + xnode(1:end-1))/2]);
+    else
+      xn = xnode;
+    endif
+
+endfunction

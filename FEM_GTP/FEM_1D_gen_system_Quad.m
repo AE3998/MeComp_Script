@@ -1,4 +1,4 @@
-function [Klm Fl] = gen_system_Quad(xnode,k,c,G)
+function [Klm Fl] = FEM_1D_gen_system_Quad(xnode,k,c,G)
    % nodos.size() y elementos.size()
     xlen = length(xnode);
     elen = xlen - 1;
@@ -75,7 +75,7 @@ function [Klm Fl] = gen_system_Quad(xnode,k,c,G)
         % C12 = c * (w1 * N1(x1)*N2(x1) + w2 * N1(x2)*N2(x2) + w3 * N1(x3)*N2(x3))
         % ...
         if c
-          Kele += c* (wi.*N_eval')*N_eval;
+          Kele += c* (wi.*N_eval')*N_eval * J;
         endif
 
         % Generacion del vector F del elemento e
