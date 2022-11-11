@@ -41,10 +41,19 @@ function [ui Ri] = Barra_2D(icone, F_ex, ke, nudo_empot)
         Klm(idx_uv, idx_uv) += ke(i)*K;
     endfor
 
-    % Se considera solo aquellos no empotrados
-    uv_empot = sort([2*nudo_empot-1, 2*nudo_empot]);
+##    % Se considera solo aquellos no empotrados
+##    uv_empot = sort([2*nudo_empot-1, 2*nudo_empot]);
+##    sub_sist = setdiff(1: 2*n_nudos, uv_empot);
 
-    sub_sist = setdiff(1: 2*n_nudos, uv_empot);
+    sub_sist = zeros(1, 2*n_nudos);
+
+    % uv empotrados
+    for i = 1:size(nudo_empot, 1)
+        idx = nudo_empot(i, 1);
+        sub_sist([2*idx-1, 2*idx]) = nudo_empot(i, [2, 3]);
+    endfor
+
+    sub_sist = !sub_sist;
 
     K_reduc = Klm(sub_sist, sub_sist);
     F_reduc = Fl(sub_sist);

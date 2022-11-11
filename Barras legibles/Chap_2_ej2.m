@@ -58,7 +58,7 @@ for e=1:n_elemnt;
     stiffness(elementDof,elementDof) += B'*B*2*detJacobian*EA;
 end
 
-
+% ============= [Falta arreglar lo que estan abajo bruh]
 % prescribed dofs
 prescribedDof = [min(xnode), max(xnode)];
 

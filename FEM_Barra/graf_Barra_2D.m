@@ -1,4 +1,4 @@
-function graf_Barra(icone, pos_i, ui, esc)
+function graf_Barra_2D(icone, pos_i, ui, esc)
 
   % Definir las posiciones de los nudos desplazados, a una escala esc
   pos_d = zeros(size(pos_i));
@@ -19,6 +19,6 @@ function graf_Barra(icone, pos_i, ui, esc)
   plot(pos_i(:, 1), pos_i(:, 2), 'ro');
   plot(pos_d(:, 1), pos_d(:, 2), 'go');
 
-  legend("Posicion original", "Posicion desplazado", ...
+  legend("Rojo = original", "Verde = desplazado", ...
           cstrcat("Esc desp = ", num2str(esc)));
 endfunction
