@@ -22,4 +22,18 @@ function [F] = fem2d_heat_pcond(F,xnode,icone,PUN)
 % * F: vector de flujo térmico con modificaciones luego de aplicar la condición
 %   de borde.
 % ----------------------------------------------------------------------
-end
+    for i = 1:size(PUN, 1)
+      e = PUN(i, 1);
+      G = PUN(i, 2);
+      xp = PUN(i, 3);
+      yp = PUN(i, 4);
+      if icone(e, 4) == -1
+        ele = icone(e, 1:3);
+      else
+        ele = icone(e, :);
+      endif
+      pos_nodes= xnode(ele, :);
+      N = fem2d_heat_blerp(pos_nodes, xp, yp);
+      F(ele) += N*G;
+    endfor
+endfunction

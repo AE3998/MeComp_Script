@@ -31,11 +31,11 @@ function [localK] = fem2d_heat_genK(nodes,kx,ky)
       for j = 1:2
         s = p(i);
         t = p(j);
-        dNi = [ -(1-t) (1-t) (1+t) -(1+t);...
+        dNi = 0.25*[ -(1-t) (1-t) (1+t) -(1+t);...
                 -(1-s) -(1+s) (1+s) (1-s)];
-        J = (0.25*dNi)*nodes;
+        J = dNi*nodes;
         Be = J\dNi;%inv(J)*dNi;
-        localC += (Be'*k*Be)*det(J);
+        localK += (Be'*k*Be)*det(J);
       endfor
     endfor
 

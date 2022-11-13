@@ -24,7 +24,7 @@ function [PHI_vec,Q_vec] = fem2d_heat_implicit(K,C,F,xnode,icone,model,dt)
 %   representa una iteración del esquema temporal (en total 2×nit columnas).
 % ----------------------------------------------------------------------
     PHI_vec = PHI_now = PHI_next = model.PHI_n;
-    [Q] = fem2d_heat_flux(xnode,icone,model,PHI);
+    [Q_vec] = fem2d_heat_flux(xnode,icone,model,PHI_now);
 
     alpha = (model.rho*model.cp)/dt;
     aK = C*alpha + K;

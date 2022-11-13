@@ -23,8 +23,10 @@ function [PHI_vec,Q_vec] = fem2d_heat_explicit(K,C,F,xnode,icone,model,dt)
 %   de flujo de calor, representado por un par (Qx,Qy). Cada par de columnas
 %   representa una iteración del esquema temporal (en total 2×nit columnas).
 % ----------------------------------------------------------------------
-    PHI_vec = PHI_now = PHI_next = model.PHI_n;
-    [Q] = fem2d_heat_flux(xnode,icone,model,PHI);
+    
+    PHI_now = PHI_next = model.PHI_n;
+    PHI_vec = PHI_now;
+    [Q_vec] = fem2d_heat_flux(xnode,icone,model,PHI_next);
 
     alpha = dt/(model.rho*model.cp);
     for i = 1:model.maxit

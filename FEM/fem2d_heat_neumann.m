@@ -16,6 +16,6 @@ function [F] = fem2d_heat_neumann(F,NEU,xnode)
   for e = 1:size(NEU, 1)
     nodos = NEU(e, [1 2]);
     dij = norm(xnode(nodos(1), :) - xnode(nodos(2), :));
-    F(nodos) += 0.5*NEU(e, 3)*dij;
+    F(nodos) -= 0.5*NEU(e, 3)*dij;
   endfor
 end

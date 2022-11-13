@@ -14,7 +14,6 @@ function [Qn] = fem2d_heat_flux(xnode,icone,model,PHI)
 % * Q: vector de flujo de calor.
 % ----------------------------------------------------------------------
   Q = zeros(model.nnodes,3);
-  k = [model.kx 0;0 model.ky];
   for e = 1 : model.nelem
       if (icone(e,4) == -1)
           ele = icone(e,1:3);
@@ -23,6 +22,7 @@ function [Qn] = fem2d_heat_flux(xnode,icone,model,PHI)
       end
       nodes = xnode(ele,:);
       temp = PHI(ele);
+      k = [model.kx 0;0 model.ky];
 
       if (size(nodes,1) == 3) % elemento triangular
           J = [nodes(2,1)-nodes(1,1)  nodes(2,2)-nodes(1,2);
@@ -44,9 +44,9 @@ function [Qn] = fem2d_heat_flux(xnode,icone,model,PHI)
           for i=1:4
             s = p(i,1);
             t = p(i,2);
-            DNnum = [(-1+t),( 1-t),( 1+t),(-1-t);
+            DNnum = 0.25*[(-1+t),( 1-t),( 1+t),(-1-t);
                      (-1+s),(-1-s),( 1+s),( 1-s)];
-            J = (0.25*DNnum)*nodes;
+            J = (DNnum)*nodes;
             B = J\DNnum; % inv(J)*DNnum;
             qxy = (-k*B*temp)';
             Q(ele(i),1:2) = Q(ele(i),1:2) + qxy;
