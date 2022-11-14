@@ -10,25 +10,27 @@ function [K,F] = fvm2d_dirichlet(K,F,cells,DIR)
 %   - Columna 1: índice de la celda donde se aplica la condición de borde.
 %   - Columna 2: valor en la cara de la celda (escalar)
 %   - Columna 3: cara a la que se aplica la condición de borde:
-%       1) S  1�7 South  1�7 Sur
-%       2) E  1�7 East  1�7 Este
-%       3) N  1�7 North  1�7 Norte
-%       4) W  1�7 West  1�7 Oeste
+%       1) S  1�7 South  1�7 Sur
+%       2) E  1�7 East  1�7 Este
+%       3) N  1�7 North  1�7 Norte
+%       4) W  1�7 West  1�7 Oeste
 
-for P = DIR(:, 1)'
+for j = 1:length(DIR(:, 1))
+  P = DIR(j, 1);
+
   % Seguir la nomenclatura [1 2 3 4] -> [s e n w] en los parametros
-  k = [cell(P).ks, cell(P).ke, cell(P).kn, cell(P).kw];
-  d = [cell(P).ds, cell(P).de, cell(P).dn, cell(P).dw];
-  a = [cell(P).as, cell(P).ae, cell(P).an, cell(P).aw];
+  k = [cells(P).ks, cells(P).ke, cells(P).kn, cells(P).kw];
+  d = [cells(P).ds, cells(P).de, cells(P).dn, cells(P).dw];
+  a = [cells(P).as, cells(P).ae, cells(P).an, cells(P).aw];
 
   % Extraer el indice i
-  i = DIR(P, 3);
+  i = DIR(j, 3);
 
   % Despejar el coeficiente que tiene la condicion del borde
   R = k(i)*a(i)/d(i);
 
   K(P, P) += R;
-  F(P) += R*DIR(P, 2);
+  F(P) += R*DIR(j, 2);
 endfor
 
 % Salida:
