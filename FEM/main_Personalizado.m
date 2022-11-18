@@ -1,34 +1,35 @@
-close all; clear all; more off;
+close all; clear all; more off; clc;
 
 xnode = [
-  0.0000000000000000, 0.0000000000000000;
-  0.0000000000000000, 1.5000000000000000;
-  0.5000000000000000, 1.0000000000000000;
-  1.0000000000000000, 0.0000000000000000;
+  0.0, 0.0;
+  0.4, 0.0;
+  0.4, 0.15;
+  0.0, 0.3;
+  0.4, 0.3;
 ];
 
 icone = [
-       1,      3,      2,     -1;
-       4,      3,       1,      -1;
+       1,      2,      3,     -1;
+       4,      1,       3,      -1;
+       4,      3,       5,      -1;
 ];
 
 DIR = [
-       1, 20.0000000000000000;
-       2, 20.0000000000000000;
+       1, 180;
+       2, 180;
 ];
 
 NEU = [
-       1, 4.0000000000000000, 0;
-       4, 3.0000000000000000, 30;
+       1, 4, 0;
+       4, 5, 0;
 ];
 
 ROB = [
-       3, 2.0000000000000000, 20.0000000000000000, 100;
+       2, 3, 50, 25;
+       5, 3, 50, 25;
 ];
 
-PUN = [
-       1, 5.0000000000000000, 0.2500000000000000, 0.8000000000000000
-];
+PUN = [];
 
 disp('---------------------------------------------------------------');
 disp('Inicializando modelo de datos...');
@@ -36,21 +37,23 @@ disp('Inicializando modelo de datos...');
 model.nnodes = size(xnode,1);
 model.nelem = size(icone,1);
 
-model.kx = 13.0000000000000000;
-model.ky = 17.0000000000000000;
-model.c = 19.0000000000000000;
+model.kx = 1.5;
+model.ky = 1.5;
+model.c = 0;
 
+% Cantidad de elementos
 model.G = [
-    23.0000000000000000;
-    23.0000000000000000;
+    0;
+    0;
+    0;
 ];
 
 % Esquema Temporal: [0] Explícito, [1] Implícito, [X] Estacionario
 model.ts = 2;
 
 % Parámetros para esquemas temporales
-model.rho = 1.0000000000000000;
-model.cp = 1.0000000000000000;
+model.rho = 1.0;
+model.cp = 1.0;
 model.maxit =            1;
 model.tol = 1.000000e-05;
 
@@ -83,3 +86,20 @@ graph = 0;
 fem2d_heat_graph_mesh(full(PHI),Q,xnode,icone,mode,graph);
 
 disp('Finalizado el post-procesamiento.');
+
+% Posproceso, evaluacion puntual
+
+% yp = 0.5, por ser simetrico el sistema, se toma que yp = 0.1
+xp = 0.1; yp = 0.1;
+
+nodos = icone(2, 1:3);
+pos_nodes = xnode(nodos, :);
+
+N = fem2d_heat_blerp(pos_nodes, xp, yp);
+Naux = blerp_cartes(pos_nodes, xp, yp);
+P = N'*PHI(nodos);
+
+hold on;
+plot(xp, yp, 'ro');
+
+
