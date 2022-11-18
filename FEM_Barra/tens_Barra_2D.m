@@ -1,10 +1,13 @@
-function te = tens_Barra_2D(icone, ce, ui)
+function te = tens_Barra_2D(xnode, icone, ce, ui)
   for i = 1:size(icone, 1)
 
     idx = icone(i, [1 2]);
-    rad = (icone(i, 3)*pi)/180;
+    pos = xnode(idx(2), :) - xnode(idx(1), :);
 
-    C = cos(rad); S = sin(rad);
+    L = norm(pos);
+    C = pos(1)/L; S = pos(2)/L;
+##    rad = (icone(i, 3)*pi)/180;
+##    C = cos(rad); S = sin(rad);
 
     T = [-C -S C S];
 

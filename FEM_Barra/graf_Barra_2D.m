@@ -12,8 +12,8 @@ function graf_Barra_2D(icone, pos_i, ui, esc)
     pos_nudos = pos_i(icone(i, [1 2]), :);
     pos_nudos_desp = pos_d(icone(i, [1 2]), :);
 
-    line(pos_nudos(:, 1), pos_nudos(:, 2));
-    line(pos_nudos_desp(:, 1), pos_nudos_desp(:, 2));
+    plot(pos_nudos(:, 1), pos_nudos(:, 2), 'r');
+    plot(pos_nudos_desp(:, 1), pos_nudos_desp(:, 2), 'g');
   endfor
 
   plot(pos_i(:, 1), pos_i(:, 2), 'ro');

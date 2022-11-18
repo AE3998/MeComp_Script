@@ -34,30 +34,30 @@ xnode = [NaN, NaN];
 
 % ===============================[Problema 1]=================================
 ##
-####% Barra con su par de nodos (indice global)
-##icone = [1 2;
-##         2 3;
-##         3 4];
-##
-##% Fuerzas externas [indice, valor] <- (-) (+) ->
-##F_ex = [2 13500];
-##
-##% Es importante definir uno por uno ya que se puede equivocar los valores
-##% y se falla todo el sistema.
-##
-##% L = longitud de cada barra en [m]
-##% E = Poisson (creo) en         [Pa/m^2]
-##% A = area de cada barra en     [m^2]
-##
-##L = [0.7, 0.7, 0.7];
-##E = [20e9, 20e9, 10e9];
-##A = [6e-4, 6e-4, 12e-4];
-##ke = (E.*A)./L;
-##
-##% nudos empotrados (indice global)
-##nudo_empot = [1 4];
-##
-##xnode = [0 0.7 1.4 2.1];
+##% Barra con su par de nodos (indice global)
+icone = [1 2;
+         2 3;
+         3 4];
+
+% Fuerzas externas [indice, valor] <- (-) (+) ->
+F_ex = [2 13500];
+
+% Es importante definir uno por uno ya que se puede equivocar los valores
+% y se falla todo el sistema.
+
+% L = longitud de cada barra en [m]
+% E = Poisson (creo) en         [Pa/m^2]
+% A = area de cada barra en     [m^2]
+
+L = [0.7, 0.7, 0.7];
+E = [20e9, 20e9, 10e9];
+A = [6e-4, 6e-4, 12e-4];
+ke = (E.*A)./L;
+
+% nudos empotrados (indice global)
+nudo_empot = [1 4];
+
+xnode = [0 0.7 1.4 2.1];
 
 % ===============================[Problema 3]=================================
 
@@ -85,20 +85,15 @@ xnode = [NaN, NaN];
 ##
 ##xnode = [0 1 2];
 
-
-
-
-
 % =======================[Solucion del sistema]=========================
-##[ui, Ri] = Barra_1D(icone, F_ex, ke, nudo_empot);
 
 % Parametro para calcular la tension por barra
 ke = (E.*A)./L;
 ce = E./L;
 
-[ui, Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot);
+[ui, Ri] = Barra_1D(icone, F_ex, ke, nudo_empot);
 
-te = tens_Barra_2D(icone, ce, ui);
+te = tens_Barra_1D(icone, ce, ui);
 
 disp("Los desplazamientos ui son: ");
 full(ui)
@@ -110,10 +105,9 @@ full(te')
 
 % ================================[Grafica]==================================
   % Escala de desplazamiento, para representar mejor la diferencia entre los puntos
-##  esc = 100;
-##  graf_Barra_1D(icone, xnode, ui, esc);
-  esc = 10;
-  graf_Barra_2D(icone, xnode, ui, esc);
+  esc = 100;
+  graf_Barra_1D(icone, xnode, ui, esc);
+
 
 
 

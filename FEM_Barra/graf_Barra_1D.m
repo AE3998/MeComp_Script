@@ -9,8 +9,8 @@ function graf_Barra_1D(icone, pos_i, ui, esc)
     pos_nudos = pos_i(icone(i, [1 2]));
     pos_nudos_desp = pos_d(icone(i, [1 2]));
 
-    line(pos_nudos, [0 0]);
-    line(pos_nudos_desp, [0 0]+dist);
+    plot(pos_nudos, [0 0], 'r');
+    plot(pos_nudos_desp, [0 0]+dist, 'g');
   endfor
 
   y = zeros(1, length(pos_i));

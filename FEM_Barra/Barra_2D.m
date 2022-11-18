@@ -1,11 +1,4 @@
-function [ui Ri] = Barra_2D(icone, F_ex, ke, nudo_empot)
-
-    % Control de error
-    if size(icone, 2) == 2
-      disp("Entrada icone 2D equivocado, por favor ingrese los angulos!");
-      ui = Ri = NaN;
-      return
-    endif
+function [ui Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot)
 
     % Cantidad de nudos
     n_nudos = length(unique(icone(:, [1 2])));
@@ -24,9 +17,14 @@ function [ui Ri] = Barra_2D(icone, F_ex, ke, nudo_empot)
         % los pares de nudos de cada barra
         nudos = icone(i, [1 2]);
 
-        % angulo dispuesto en la ultima columna
-        rad = (icone(i, end)*pi)/180;
-        C = cos(rad); S = sin(rad);
+        % cos(ang) = x2-x1/L, sin(ang) = y2-y1/L
+        L = norm(xnode(nudos(2), :) - xnode(nudos(1), :));
+        dx = xnode(nudos(2), 1) - xnode(nudos(1), 1);
+        dy = xnode(nudos(2), 2) - xnode(nudos(1), 2);
+        % Las funciones trigonometricas
+        C = dx/L; S = dy/L;
+##        rad = (icone(i, end)*pi)/180;
+##        C = cos(rad); S = sin(rad);
 
         % Construir la matriz k'
         sK = [C*C C*S; C*S S*S];
