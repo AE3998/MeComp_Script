@@ -1,5 +1,5 @@
 function [K,F] = fem2d_pstr_fixnodes(K,F,Fixnodes)
-% Descripción: módulo para calcular y ensamblar las contribuciones de nodos 
+% Descripción: módulo para calcular y ensamblar las contribuciones de nodos
 % pertenecientes a fronteras con desplazamientos fijos.
 
 % Entrada:
@@ -13,9 +13,20 @@ function [K,F] = fem2d_pstr_fixnodes(K,F,Fixnodes)
 %   - Columna 3: valor del desplazamiento.
 
 % Salida:
-% * K: matriz del sistema luego de realizar las simplificaciones que surgen de 
+% * K: matriz del sistema luego de realizar las simplificaciones que surgen de
 % aplicar la condición de borde.
-% * F: vector de fuerzs luego de realizar las simplificaciones que surgen de 
+% * F: vector de fuerzs luego de realizar las simplificaciones que surgen de
 % aplicar la condición de borde.
 % ----------------------------------------------------------------------
-end
+  for i = 1:size(Fixnodes, 1)
+    nodo = Fixnodes(i, 1);
+
+    % Indice de fila de la matriz a manipular, que justo vale 1 o 2
+    idx = 2*nodo + Fixnodes(i, 2) - 1;
+
+    K(idx, :) = 0;
+    K(idx, idx) = 1;
+    F(idx) = Fixnodes(i, 3);
+  endfor
+
+endfunction

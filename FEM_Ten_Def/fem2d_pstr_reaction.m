@@ -14,10 +14,17 @@ function [reaction] = fem2d_pstr_reaction(K,F,U,Fixnodes)
 %   - Columna 3: valor del desplazamiento en y.
 
 % Salida:
-% * reaction: vector de reacciones. Por cada nodo se computan las componentes x e y 
+% * reaction: vector de reacciones. Por cada nodo se computan las componentes x e y
 %   de la reacción en dicho nodo.
 % ----------------------------------------------------------------------
-
+  if isempty(Fixnodes)
+    disp('************');
+    disp('El problema ha sido mal condicionado. Se espera al menos una condicion Dirichlet');
+    disp('************');
     reaction = [];
-
+  else
+    reaction = sparse(size(U, 1), 1);
+    idx = 2*Fixnodes(:, 1) + Fixnodes(:, 2) - 2;
+    reaction(idx) = K(idx, :) * U - F(idx);
+  endif
 end
