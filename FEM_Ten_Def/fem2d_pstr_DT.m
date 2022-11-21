@@ -21,7 +21,7 @@ function [Def,Ten,Ten_VM] = fem2d_pstr_DT(xnode,icone,model,D,U)
 % ----------------------------------------------------------------------
   Def_node = zeros(model.nnodes, 4);
   for e = 1:size(icone, 1)
-    if icone(e, -1)
+    if icone(e, 4) == -1
       ele = icone(e, 1:3);
       u = 2*ele-1; v = 2*ele;
 
@@ -84,7 +84,7 @@ function [Def,Ten,Ten_VM] = fem2d_pstr_DT(xnode,icone,model,D,U)
           Be(2, [2 4 6 8]) = Baux(2, :);
           Be(3, [1 3 5 7]) = Baux(2, :);
 
-          Def_node_xy = Be*U(idx);
+          Def_node_xy = [Be*U(idx)]';
 
           % Agregar a cada "nodo" las Deformaciones y la cantidad que se
           % repite este nodo cuando recorro los elementos

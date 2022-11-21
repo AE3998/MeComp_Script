@@ -12,7 +12,7 @@ function [localK] = fem2d_pstr_genK(nodes,D,th)
 % * localK: matriz de rigidez del elemento (local).
 % ----------------------------------------------------------------------
   n = size(nodes, 1);
-  localK = zeros(n);
+  localK = zeros(2*n);
 
   if n == 3
   % Elemento triangular

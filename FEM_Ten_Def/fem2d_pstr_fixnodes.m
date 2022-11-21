@@ -22,8 +22,13 @@ function [K,F] = fem2d_pstr_fixnodes(K,F,Fixnodes)
     nodo = Fixnodes(i, 1);
 
     % Indice de fila de la matriz a manipular, que justo vale 1 o 2
-    idx = 2*nodo + Fixnodes(i, 2) - 1;
-
+    %idx = 2*nodo + Fixnodes(i, 2) - 2;
+    if (Fixnodes(i, 2) == 1)
+      idx = 2*nodo-1;
+    else 
+      idx = 2*nodo;
+    endif
+    
     K(idx, :) = 0;
     K(idx, idx) = 1;
     F(idx) = Fixnodes(i, 3);
