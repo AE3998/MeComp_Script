@@ -28,7 +28,9 @@ function [ui Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot)
 
         % Construir la matriz k'
         sK = [C*C C*S; C*S S*S];
-        K = [sK -sK; -sK sK];
+        disp(cstrcat("Barra ", num2str(i)));
+
+        K = [sK -sK; -sK sK]
 
         % Si el par de nudos = [2 5], sus correspondientes indices en
         % la matriz global es idx_uv = [3 4 , 9 10]
@@ -44,6 +46,8 @@ function [ui Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot)
 ##    sub_sist = setdiff(1: 2*n_nudos, uv_empot);
 
     sub_sist = zeros(1, 2*n_nudos);
+
+    full(Klm)
 
     % uv empotrados
     for i = 1:size(nudo_empot, 1)

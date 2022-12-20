@@ -11,10 +11,10 @@ function [K,F] = fvm2d_robin(K,F,cells,ROB)
 %     - Columna 2: valor de coeficiente de calor (h)
 %     - Columna 3: valor de temperatura de referencia (phi_inf).
 %     - Columna 4: direcciÃ³n y sentido del flujo:
-%         1) Flujo en direcciÃ³n eje-y, sentido negativo (S â€„1ï¿½71ï¿„1ï¿½77 South â€„1ï¿½71ï¿„1ï¿½77 Sur)
-%         2) Flujo en direcciÃ³n eje-x, sentido positivo (E â€„1ï¿½71ï¿„1ï¿½77 East â€„1ï¿½71ï¿„1ï¿½77 Este)
-%         3) Flujo en direcciÃ³n eje-y, sentido positivo (N â€„1ï¿½71ï¿„1ï¿½77 North â€„1ï¿½71ï¿„1ï¿½77 Norte)
-%         4) Flujo en direcciÃ³n eje-x, sentido negativo (W â€„1ï¿½71ï¿„1ï¿½77 West â€„1ï¿½71ï¿„1ï¿½77 Oeste)
+%         1) Flujo en direcciÃ³n eje-y, sentido negativo (S â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 South â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 Sur)
+%         2) Flujo en direcciÃ³n eje-x, sentido positivo (E â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 East â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 Este)
+%         3) Flujo en direcciÃ³n eje-y, sentido positivo (N â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 North â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 Norte)
+%         4) Flujo en direcciÃ³n eje-x, sentido negativo (W â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 West â€„1¤71ï¿„1¤771ï¿„1¤71ï¿„1¤777 Oeste)
   for j = 1:length(ROB(:, 1))
 
     P = ROB(j, 1);
@@ -28,7 +28,7 @@ function [K,F] = fvm2d_robin(K,F,cells,ROB)
     i = ROB(j, 4); % Indice vecino
     coef = h/(ki(i)+h*di(i)); % h/k-hd
 
-    % a = 2hPhi_inf/k-hd
+    % a = hPhi_inf/k-hd
     a = ROB(j, 3)*coef;
 
     % b = -h/k-hd

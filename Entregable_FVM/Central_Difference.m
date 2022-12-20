@@ -6,6 +6,7 @@ function [Phi Pex PeL K]= Central_Difference(malla, phi_CB, parametros, CD)
   pCp = parametros.pCp;
   G = parametros.G;
   v = parametros.v;
+  A = parametros.A;
 
 % Reconstruir la k, L longitud global
   k = k/pCp;
@@ -62,10 +63,10 @@ DwCB = 2*k/Dx(1);   % [_x | 2 | ... | n-1 | x ]
   endif
 
 % aE = (De - ve*Be)/Dx
-  aE = [(De - v*Be)./Dx(1:end-1), (DeCB - v*BeCB)./Dx(end)];
+  aE = [(De - v*Be)./Dx(1:end-1), (DeCB - v*BeCB)./Dx(end)] *A;
 
 % aW = (Dw + vw*Bw)/Dx
-  aW = [(DwCB + v*BwCB)./Dx(1), (Dw + v*Bw)./Dx(2:end)];
+  aW = [(DwCB + v*BwCB)./Dx(1), (Dw + v*Bw)./Dx(2:end)] *A;
 
 % ap = aE + aW
   ap = aE + aW;
