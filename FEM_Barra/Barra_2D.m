@@ -12,6 +12,7 @@ function [ui Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot)
       % siendo ui = 2*nudo-1, vi = 2*nudo
       Fl([2*nudo-1, 2*nudo]) = F_ex(i, [2 3]);
     endfor
+      Fl
 
     for i = 1:size(icone, 1)
         % los pares de nudos de cada barra
@@ -31,7 +32,7 @@ function [ui Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot)
         disp(cstrcat("Barra ", num2str(i)));
 
         K = [sK -sK; -sK sK]
-
+        ke(i)
         % Si el par de nudos = [2 5], sus correspondientes indices en
         % la matriz global es idx_uv = [3 4 , 9 10]
         ui = 2*nudos - 1;
@@ -55,10 +56,12 @@ function [ui Ri] = Barra_2D(xnode, icone, F_ex, ke, nudo_empot)
         sub_sist([2*idx-1, 2*idx]) = nudo_empot(i, [2, 3]);
     endfor
 
-    sub_sist = !sub_sist;
+    sub_sist = !sub_sist
 
     K_reduc = Klm(sub_sist, sub_sist);
+    full(K_reduc)
     F_reduc = Fl(sub_sist);
+    full(F_reduc)
     ui_reduc = K_reduc\F_reduc;
 
     % Reconstruir el vector de desplazamiento con los empotrados

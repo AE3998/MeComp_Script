@@ -24,8 +24,8 @@ function [ui, Ri] = Barra_1D(icone, F_ex, ke, nudo_empot)
     % Se considera solo aquellos no empotrados
     sist = setdiff(1: n_nudos, nudo_empot);
 
-    K_reduc = Klm(sist, sist);
-    F_reduc = Fl(sist);
+    K_reduc = Klm(sist, sist)
+    F_reduc = Fl(sist)
     ui_reduc = K_reduc\F_reduc;
 
     % Reconstruir el vector de desplazamiento con los empotrados
